@@ -8,7 +8,16 @@ button.addEventListener("click", function() {
 
     newTask.textContent = input.value;
 
-    console.log(input.value);
+    const deleteButton = document.createElement("button");
+
+    deleteButton.textContent = " X ";
+
+    deleteButton.addEventListener("click",function() {
+        newTask.remove();
+    });
+
+    newTask.appendChild(deleteButton);
+
     taskList.appendChild(newTask);
 
     input.value = "";
