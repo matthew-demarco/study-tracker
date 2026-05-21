@@ -2,7 +2,6 @@ const button = document.getElementById("addButton"); // Find the Add Task button
 const input = document.getElementById("taskInput");  // Finds the textbox.
 const taskList = document.getElementById("taskList"); // Finds the <ul> where tasks appear.
 
-
  
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];    //Load saved tasks from localStorage or use empty array
 
@@ -16,7 +15,26 @@ function renderTasks() {                             // Defines a function that 
 
     for (let i = 0; i < tasks.length; i++) {         // Loops through every task in the array
         const newTask = document.createElement("li");       // Creates a new <li> element in memory(It's not on display yet)
-        newTask.textContent = tasks[i];                     // Puts the task text inside the <li>
+        newTask.textContent = tasks[i].text;                     // Puts the task text inside the <li>
+        
+
+        const checkbox = document.createElement("input");
+
+        checkbox.type = "checkbox";
+
+        checkbox.checked = tasks[i].completed;
+
+        if(tasks[i].completed) {
+            newTask.style.textDecoration = "line-through";
+        }
+
+        newTask.prepend(checkbox);
+
+        checkbox.addEventListener("change",function(){
+            tasks[i].completed =  checkbox.checked;
+            saveTasks();
+            renderTasks();
+        });
 
         const deleteButton = document.createElement("button");  // Creates a new button in memory, not visible quite yet
         deleteButton.textContent = " X ";                       // Makes the button display " X "
@@ -37,7 +55,10 @@ button.addEventListener("click", function() {                   // When Add Task
         return;
     }
 
-    tasks.push(input.value);                                    // Adds the typed task into the array.
+    tasks.push({
+        text: input.value,
+        completed: false
+    });                                   
 
     input.value = "";                                           // Clear the textbox after adding task
 
