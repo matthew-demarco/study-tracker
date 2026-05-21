@@ -1,25 +1,48 @@
-const button = document.getElementById("addButton");
-const input = document.getElementById("taskInput");
-const taskList = document.getElementById("taskList");
+const button = document.getElementById("addButton"); // Find the Add Task button and save it in a variable called button.
+const input = document.getElementById("taskInput");  // Finds the textbox.
+const taskList = document.getElementById("taskList"); // Finds the <ul> where tasks appear.
 
-button.addEventListener("click", function() {
 
-    const newTask = document.createElement("li");
+ 
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];    //Load saved tasks from localStorage or use empty array
 
-    newTask.textContent = input.value;
 
-    const deleteButton = document.createElement("button");
+function saveTasks() {
+    localStorage.setItem("tasks", JSON.stringify(tasks));       //taking the current tasks array and saving it into browser localStorage
+}
 
-    deleteButton.textContent = " X ";
+function renderTasks() {                             // Defines a function that rebuilds the visible tasks list
+    taskList.innerHTML = "";                         // This clears the invisible list Because each time we render, we want to rebuild the whole list from the current tasks array. Without this, tasks would duplicate every time renderTasks() runs.
 
-    deleteButton.addEventListener("click",function() {
-        newTask.remove();
-    });
+    for (let i = 0; i < tasks.length; i++) {         // Loops through every task in the array
+        const newTask = document.createElement("li");       // Creates a new <li> element in memory(It's not on display yet)
+        newTask.textContent = tasks[i];                     // Puts the task text inside the <li>
 
-    newTask.appendChild(deleteButton);
+        const deleteButton = document.createElement("button");  // Creates a new button in memory, not visible quite yet
+        deleteButton.textContent = " X ";                       // Makes the button display " X "
 
-    taskList.appendChild(newTask);
+        deleteButton.addEventListener("click", function() {     // This attaches behavior to that specific X button. It means When this X button is clicked, run the code inside. This is important because buttons created with JavaScript need event listeners attached in JavaScript.
+            tasks.splice(i, 1);                                 // Removes one task from the array at index i
+            saveTasks();                                        // Calls function "saveTasks()"
+            renderTasks();                                      // Calls function "renderTasks()"
+        });
 
-    input.value = "";
+        newTask.appendChild(deleteButton);                      // Adds the X button inside the <lib>
+        taskList.appendChild(newTask);                          // Adds the complete <li> to the <ul> on the page. This is the moment the task becomes visible.
+    }
+}
 
+button.addEventListener("click", function() {                   // When Add Task button is clicked, run this code.
+    if (input.value.trim() === "") {                            // This prevents blank tasks.
+        return;
+    }
+
+    tasks.push(input.value);                                    // Adds the typed task into the array.
+
+    input.value = "";                                           // Clear the textbox after adding task
+
+    saveTasks();                                                // Saves the updated task array to localStorage.
+    renderTasks();                                              // Redraws the visible task list so the new task appears.
 });
+
+renderTasks();
