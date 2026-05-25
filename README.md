@@ -11,6 +11,21 @@ A full-stack study tracker built with Flask, HTML, CSS, and JavaScript.
 - Dynamic task rendering
 - Responsive and modern UI styling
 
+## Screenshots
+
+### Main Dashboard
+<img width="715" height="382" alt="image" src="https://github.com/user-attachments/assets/22cdec9f-3f59-4231-a080-6b2b8ba3d655" />
+
+### Completed Tasks
+<img width="662" height="377" alt="image" src="https://github.com/user-attachments/assets/fd1b5827-fd57-402a-9f4c-8a355dce1973" />
+
+## Architecture Flowchart
+
+This diagram visualizes the application's execution flow, frontend/backend interaction, state management, and localStorage persistence lifecycle.
+
+<img width="1179" height="1334" alt="to-do-app-arch-flowchart" src="https://github.com/user-attachments/assets/19c05aba-a554-4003-8891-1fd8dcab9ae6" />
+
+
 ## Technologies Used
 
 - Python
